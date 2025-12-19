@@ -2,5 +2,6 @@ package envanter;
 
 public interface Storable {
 
-    void displayInfo();
+    void stokArtir(int quantity);
+    void stokAzalt(int quantity);
 }
