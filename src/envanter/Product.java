@@ -50,8 +50,8 @@ public class Product implements Storable {
             System.out.println("Hata: Stok miktarı negatif bir değerle güncellenemez!");
         }
     }
-
     public void setSupplier(Supplier supplier) {this.supplier = supplier;}
+
     @Override
     public String toString() {
         return "Ürün:" + name + " | stok: "+stock + " | fiyat: " + price + " | tedarikçi: " + supplier.getName();
