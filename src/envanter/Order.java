@@ -1,4 +1,4 @@
-import envanter.Product;
+package envanter;
 
 public class Order {
     private Product product;
