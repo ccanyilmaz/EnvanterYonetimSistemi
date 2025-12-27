@@ -11,4 +11,29 @@ public class Order {
         this.totalPrice= product.getPrice()*quantity;
 
     }
+    public void processOrder(){
+        if(product.getStock()>=quantity){
+            product.stokAzalt(quantity);
+            printReceipt();
+        }
+        else{
+            System.out.println("\n[SİSTEM MESAJI]: İşlem başarısız. Yetersiz stok!");
+            System.out.println("Talep edilen: "+ quantity +" | Mevcut: " + product.getStock());
+        }
+    }
+    private void printReceipt(){
+        System.out.println("\n******************************");
+        System.out.println("       SATIŞ MAKBUZU");
+        System.out.println("******************************");
+        System.out.println("Ürün: " + product.getName());
+        System.out.println("Tedarikçi: " + product.getSupplier().getName());
+        System.out.println("Adet: " + quantity);
+        System.out.println("Birim fiyat: " + product.getPrice()+" TL");
+        System.out.println("TOPLAM TUTAR : " + totalPrice + " TL");
+        System.out.println("******************************");
+        System.out.println("İşlem başarıyla tamamlandı.\n");
+    }
+    public double getTotalPrice(){
+        return totalPrice;
+    }
 }
