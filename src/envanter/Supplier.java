@@ -9,7 +9,7 @@ public class Supplier {
     public void setName(String name) {this.name = name;}
     public void setCategory(String category) {this.category = category;}
 
-    public Supplier(String name, String contact, String category){
+    public Supplier(String name, String category){
         this.name=name;
         this.category=category;
     }
