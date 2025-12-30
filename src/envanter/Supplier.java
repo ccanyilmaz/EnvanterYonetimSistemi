@@ -1,5 +1,7 @@
 package envanter;
 
+import java.util.ArrayList;
+
 public class Supplier {
     private String name;
     private String category;
@@ -13,6 +15,7 @@ public class Supplier {
         this.name=name;
         this.category=category;
     }
+
     @Override
     public String toString() {
         return "tedarikçi: " + name + " | Kategori: " + category;

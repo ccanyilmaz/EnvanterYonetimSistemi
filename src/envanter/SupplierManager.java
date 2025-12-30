@@ -9,7 +9,9 @@ public class SupplierManager {
         suppliers.add(s);
         System.out.println("Bilgi: " + s.getName() + " sisteme eklendi.");
     }
-
+    public ArrayList<Supplier> getSuppliers() {
+        return suppliers;
+    }
     public Supplier findSupplier(String name){
         for (Supplier s : suppliers){
             if(s.getName().equalsIgnoreCase(name))
