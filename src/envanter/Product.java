@@ -47,7 +47,8 @@ public class Product implements Storable {
         if (stock >= 0) {
             this.stock = stock;
         } else {
-            System.out.println("Hata: Stok miktarı negatif bir değerle güncellenemez!");
+            System.out.println("Hata: Stok negatif olamaz!");
+
         }
     }
     public void setSupplier(Supplier supplier) {this.supplier = supplier;}

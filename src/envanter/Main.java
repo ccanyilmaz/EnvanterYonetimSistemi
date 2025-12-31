@@ -66,23 +66,23 @@ public class Main {
                         }
                     }
                     break;
-                    case 4: // YENİ ÜRÜN EKLE
+                    case 4:
                     System.out.println("\n--- Yeni Urun Girisi ---");
                     String name = getStringSafe("Urun Adi: ");
                     int stock = getIntSafe("Stok Adedi: ");
                     double price = getDoubleSafe("Birim Fiyat: ");
                     String date = getStringSafe("Son Kul. Tar. (Orn: 01.01.2025): ");
 
-                    // --- TEDARİKÇİ SEÇİMİ BURADA BAŞLIYOR ---
+
                     System.out.println("\nLutfen bir tedarikci seciniz:");
-                    ArrayList<Supplier> allSuppliers = supplierManager.getSuppliers(); // Tüm tedarikçileri al
+                    ArrayList<Supplier> allSuppliers = supplierManager.getSuppliers();
 
                     if (allSuppliers.isEmpty()) {
                         System.out.println("[!] Sistemde hic tedarikci yok! Once tedarikci eklemelisiniz.");
                         break;
                     }
 
-                    // Tedarikçileri numaralandırarak listele
+
                     for (int i = 0; i < allSuppliers.size(); i++) {
                         System.out.println((i + 1) + ". " + allSuppliers.get(i).getName());
                     }
@@ -97,9 +97,9 @@ public class Main {
                             System.out.println("[!] Gecersiz numara, tekrar deneyin.");
                         }
                     }
-                    // --- TEDARİKÇİ SEÇİMİ BİTTİ ---
 
-                    // Artık s1 yerine seçilen selectedSupplier kullanılıyor
+
+
                     inventory.addProduct(new PerishableProduct(name, stock, price, selectedSupplier, date));
                     System.out.println("[BASARILI] " + name + " (" + selectedSupplier.getName() + ") sisteme eklendi.");
                     break;
@@ -125,7 +125,7 @@ public class Main {
         scanner.close();
     }
 
-    // --- YARDIMCI METOTLAR ---
+
     private static void printMenu() {
         System.out.println("\n1-Ürün Listele | 2-Ürün Ara/Sat | 3-Stok GÜncelleme | 4-Ürün Ekle | 5-Ürün Sil | 6-Tedarikci Yönetim | 0-Cikis");
     }
