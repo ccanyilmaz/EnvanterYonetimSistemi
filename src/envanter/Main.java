@@ -4,9 +4,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+     static void main() {
         Inventory inventory = new Inventory();
         SupplierManager supplierManager = new SupplierManager();
 
@@ -70,7 +70,7 @@ public class Main {
                     System.out.println("\n--- Yeni Urun Girisi ---");
                     String name = getStringSafe("Urun Adi: ");
                     int stock = getIntSafe("Stok Adedi: ");
-                    double price = getDoubleSafe("Birim Fiyat: ");
+                    double price = getDoubleSafe();
                     String date = getStringSafe("Son Kul. Tar. (Orn: 01.01.2025): ");
 
 
@@ -162,10 +162,10 @@ public class Main {
         }
     }
 
-    private static double getDoubleSafe(String message) {
+    private static double getDoubleSafe() {
         while (true) {
             try {
-                System.out.print(message);
+                System.out.print("Birim Fiyat: ");
                 return Double.parseDouble(scanner.nextLine().replace(",", ".").trim());
             } catch (Exception e) {
                 System.out.println("[HATA] Gecersiz fiyat!");
@@ -183,7 +183,7 @@ public class Main {
     }
 
     private static Product selectProductFromList(ArrayList<Product> products) {
-        if (products.size() == 1) return products.get(0);
+        if (products.size() == 1) return products.getFirst();
         for (int i = 0; i < products.size(); i++) {
             System.out.println((i + 1) + ". " + products.get(i));
         }
