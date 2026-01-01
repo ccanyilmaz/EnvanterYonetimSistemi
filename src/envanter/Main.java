@@ -16,10 +16,10 @@ public class Main {
         supplierManager.addSupplier(s2);
 
 
-        inventory.addProduct(new PerishableProduct("Süt", 50, 70, s1, "12.12.2026"));
-        inventory.addProduct(new PerishableProduct("Yoğurt", 40, 100, s1, "31.12.2026"));
-        inventory.addProduct(new PerishableProduct("Elma", 100, 15.0, s2, "07.06.2026"));
-        inventory.addProduct(new PerishableProduct("Muz", 80, 40.0, s2, "08.09.2026"));
+        inventory.addProduct(new PerishableProduct("Süt", 50, 70, s1, "12.12.2025"));
+        inventory.addProduct(new PerishableProduct("Yoğurt", 40, 100, s1, "30.01.2026"));
+        inventory.addProduct(new PerishableProduct("Elma", 100, 15.0, s2, "04.02.2026"));
+        inventory.addProduct(new PerishableProduct("Muz", 80, 40.0, s2, "08.01.2026"));
 
 
         System.out.println("\n\n-----ENVANTER YONETIM SISTEMI-----");
@@ -33,6 +33,29 @@ public class Main {
             switch (choice) {
                 case 1:
                     inventory.displayInventory();
+
+                    System.out.println("\n--- KRİTİK DURUMDAKİ ÜRÜNLER (SKT Son 7 Gün) ---");
+                    boolean kritikUrunVarMi = false;
+
+
+                    for (Product p : inventory.getProducts()) {
+
+                        if (p instanceof PerishableProduct pp) {
+                            long kalanGun = pp.getDaysUntilExpiration();
+                            if (kalanGun <= 7) {
+                                kritikUrunVarMi = true;
+                                if (kalanGun < 0) {
+                                    System.out.println("[!!!] TARİHİ GEÇMİŞ: " + pp.getName() + " (" + Math.abs(kalanGun) + " gün geçmiş)");
+                                } else {
+                                    System.out.println("[!] YAKLAŞAN SKT: " + pp.getName() + " (Kalan: " + kalanGun + " gün)");
+                                }
+                            }
+                        }
+                    }
+
+                    if (!kritikUrunVarMi) {
+                        System.out.println("[TAMAM] Şu an kritik durumda ürün bulunmuyor.");
+                    }
                     break;
                 case 2:
                     String searchName = getStringSafe("Aranacak urun adi: ");
@@ -42,6 +65,14 @@ public class Main {
                     } else {
                         Product selectedProduct = selectProductFromList(results);
                         if (selectedProduct != null) {
+                            if (selectedProduct instanceof PerishableProduct pp) {
+                                if (pp.getDaysUntilExpiration() < 0) {
+                                    System.out.println("\n[HATA] SATIŞ ENGELLENDİ!");
+                                    System.out.println("Neden: " + pp.getName() + " ürününün son kullanma tarihi geçmiş.");
+                                    System.out.println("Lütfen ürünü envanterden siliniz (Seçenek 5).");
+                                    break;
+                                }
+                            }
                             int qty = getIntSafe("Kac adet almak istiyorsunuz? ");
                             if (qty > 0) {
                                 new Order(selectedProduct, qty).processOrder();
@@ -71,7 +102,7 @@ public class Main {
                     String name = getStringSafe("Urun Adi: ");
                     int stock = getIntSafe("Stok Adedi: ");
                     double price = getDoubleSafe();
-                    String date = getStringSafe("Son Kul. Tar. (Orn: 01.01.2025): ");
+                    String date = getDateSafe();
 
 
                     System.out.println("\nLutfen bir tedarikci seciniz:");
@@ -97,9 +128,6 @@ public class Main {
                             System.out.println("[!] Gecersiz numara, tekrar deneyin.");
                         }
                     }
-
-
-
                     inventory.addProduct(new PerishableProduct(name, stock, price, selectedSupplier, date));
                     System.out.println("[BASARILI] " + name + " (" + selectedSupplier.getName() + ") sisteme eklendi.");
                     break;
@@ -180,6 +208,19 @@ public class Main {
             input = scanner.nextLine();
         }
         return input;
+    }
+    private static String getDateSafe() {
+         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy");
+         while (true) {
+            System.out.print("Son Kul. Tar. (GG.AA.YYYY): ");
+            String input = scanner.nextLine().trim();
+            try {
+                java.time.LocalDate.parse(input, formatter);
+                return input;
+            } catch (java.time.format.DateTimeParseException e) {
+                System.out.println("[HATA] Geçersiz format! Lütfen GG.AA.YYYY şeklinde giriniz (Örn: 12.12.2026)");
+            }
+        }
     }
 
     private static Product selectProductFromList(ArrayList<Product> products) {

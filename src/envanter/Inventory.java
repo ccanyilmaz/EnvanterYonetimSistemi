@@ -41,5 +41,9 @@
                 }
             }
         }
+
+        public ArrayList<Product> getProducts() {
+            return this.products;
+        }
     }
 
