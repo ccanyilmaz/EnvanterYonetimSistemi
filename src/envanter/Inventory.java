@@ -7,14 +7,17 @@
             products.add(p);
             System.out.println(p.getName() + " başarıyla envantere eklendi.");
         }
-        public void removeProduct(String name) {
-            // removeIf bir eleman silerse true döner, bulamazsa false döner.
-            boolean silindiMi = products.removeIf(p -> p.getName().equalsIgnoreCase(name));
+        public void removeProduct(String productName, String supplierName) {
+
+            boolean silindiMi = products.removeIf(p ->
+                    p.getName().equalsIgnoreCase(productName) &&
+                            p.getSupplier().getName().equalsIgnoreCase(supplierName)
+            );
 
             if (silindiMi) {
-                System.out.println("[ONAY] " + name + " envanterden başarıyla silindi.");
+                System.out.println("[ONAY] " + supplierName + " tedarikçisine ait '" + productName + "' silindi.");
             } else {
-                System.out.println("[HATA] '" + name + "' adında bir ürün bulunamadı!");
+                System.out.println("[HATA] " + supplierName + " tedarikçisinden '" + productName + "' bulunamadı!");
             }
         }
 

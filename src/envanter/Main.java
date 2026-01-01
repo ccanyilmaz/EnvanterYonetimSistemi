@@ -104,8 +104,29 @@ public class Main {
                     System.out.println("[BASARILI] " + name + " (" + selectedSupplier.getName() + ") sisteme eklendi.");
                     break;
                 case 5:
-                    String delName = getStringSafe("Silinecek urun adi: ");
-                    inventory.removeProduct(delName);
+                    String delName = getStringSafe("Silinecek ürün adı: ");
+
+                    System.out.println("\nHangi tedarikçiden silinsin?");
+                    ArrayList<Supplier> suppliers = supplierManager.getSuppliers();
+
+                    if (suppliers.isEmpty()) {
+                        System.out.println("[HATA] Kayıtlı tedarikçi yok, silme işlemi yapılamaz!");
+                        break;
+                    }
+
+                    for (int i = 0; i < suppliers.size(); i++) {
+                        System.out.println((i + 1) + ". " + suppliers.get(i).getName());
+                    }
+
+                    int supplierChoice = getIntSafe("Seçiminiz (1-" + suppliers.size() + "): ");
+
+                    if (supplierChoice > 0 && supplierChoice <= suppliers.size()) {
+                        String selectedSupplierName = suppliers.get(supplierChoice - 1).getName();
+
+                        inventory.removeProduct(delName, selectedSupplierName);
+                    } else {
+                        System.out.println("[GEÇERSİZ] Yanlış seçim yaptınız.");
+                    }
                     break;
                 case 6:
                     System.out.println("\n1. Listele\n2. Yeni Ekle");
