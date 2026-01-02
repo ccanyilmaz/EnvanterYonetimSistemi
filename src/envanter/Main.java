@@ -10,17 +10,20 @@ public class Main {
         Inventory inventory = new Inventory();
         SupplierManager supplierManager = new SupplierManager();
 
+         inventory.loadFromCsv();
+
         Supplier s1 = new Supplier("Ahmet Gıda", "temel gıda");
         Supplier s2 = new Supplier("Manav Mehmet", "Sebze-Meyve");
         supplierManager.addSupplier(s1);
         supplierManager.addSupplier(s2);
 
-
-        inventory.addProduct(new PerishableProduct("Süt", 50, 70, s1, "12.12.2025"));
-        inventory.addProduct(new PerishableProduct("Yoğurt", 40, 100, s1, "30.01.2026"));
-        inventory.addProduct(new PerishableProduct("Elma", 100, 15.0, s2, "04.02.2026"));
-        inventory.addProduct(new PerishableProduct("Muz", 80, 40.0, s2, "08.01.2026"));
-
+       if (inventory.getProducts().isEmpty()) {
+           inventory.addProduct(new PerishableProduct("Süt", 50, 70, s1, "12.12.2025"));
+           inventory.addProduct(new PerishableProduct("Yoğurt", 40, 100, s1, "30.01.2026"));
+           inventory.addProduct(new PerishableProduct("Elma", 100, 15.0, s2, "04.02.2026"));
+           inventory.addProduct(new PerishableProduct("Muz", 80, 40.0, s2, "08.01.2026"));
+           inventory.saveToCsv();
+       }
 
         System.out.println("\n\n-----ENVANTER YONETIM SISTEMI-----");
         System.out.println("\nMerhaba, lütfen yapmak istediğiniz işlemi seçiniz.");
@@ -76,6 +79,7 @@ public class Main {
                             int qty = getIntSafe("Kac adet almak istiyorsunuz? ");
                             if (qty > 0) {
                                 new Order(selectedProduct, qty).processOrder();
+                                inventory.saveToCsv();
                             } else {
                                 System.out.println("[!] Gecersiz miktar.");
                             }
@@ -93,6 +97,7 @@ public class Main {
                             System.out.println("Mevcut Stok: " + productToUpdate.getStock());
                             int newStock = getIntSafe("Yeni stok miktari: ");
                             productToUpdate.setStock(newStock);
+                            inventory.saveToCsv();
                             System.out.println("[ONAY] Stok guncellendi.");
                         }
                     }
@@ -129,6 +134,7 @@ public class Main {
                         }
                     }
                     inventory.addProduct(new PerishableProduct(name, stock, price, selectedSupplier, date));
+                    inventory.saveToCsv();
                     System.out.println("[BASARILI] " + name + " (" + selectedSupplier.getName() + ") sisteme eklendi.");
                     break;
                 case 5:
@@ -152,6 +158,7 @@ public class Main {
                         String selectedSupplierName = suppliers.get(supplierChoice - 1).getName();
 
                         inventory.removeProduct(delName, selectedSupplierName);
+                        inventory.saveToCsv();
                     } else {
                         System.out.println("[GEÇERSİZ] Yanlış seçim yaptınız.");
                     }

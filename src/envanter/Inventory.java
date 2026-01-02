@@ -1,5 +1,11 @@
     package envanter;
+    import java.io.File;
+    import java.io.FileWriter;
+    import java.io.IOException;
+    import java.io.PrintWriter;
     import java.util.ArrayList;
+    import java.util.Scanner;
+
     public class Inventory {
         private ArrayList<Product> products = new ArrayList<>();
 
@@ -44,6 +50,51 @@
 
         public ArrayList<Product> getProducts() {
             return this.products;
+        }
+
+        // DOSYA İŞLEMLERİ
+        public void saveToCsv() {
+            try (PrintWriter out = new PrintWriter(new FileWriter("envanter.csv"))) {
+                for (Product p : products) {
+
+                    String line = p.getName() + "," + p.getStock() + "," + p.getPrice() + "," + p.getSupplier().getName();
+
+
+                    if (p instanceof PerishableProduct pp) {
+                        line += "," + pp.getExpirationDate();
+                    }
+                    out.println(line);
+                }
+            } catch (IOException e) {
+                System.out.println("[HATA] Dosyaya kaydedilemedi: " + e.getMessage());
+            }
+        }
+
+        public void loadFromCsv() {
+            File file = new File("envanter.csv");
+            if (!file.exists()) return;
+
+            try (Scanner fileScanner = new Scanner(file)) {
+                products.clear();
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine();
+                    String[] data = line.split(",");
+
+
+                    String name = data[0];
+                    int stock = Integer.parseInt(data[1]);
+                    double price = Double.parseDouble(data[2]);
+                    Supplier supplier = new Supplier(data[3], "Bilinmiyor");
+
+                    if (data.length == 5) {
+                        products.add(new PerishableProduct(name, stock, price, supplier, data[4]));
+                    } else {
+                        products.add(new Product(name, stock, price, supplier));
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("[HATA] Veriler yüklenirken sorun çıktı: " + e.getMessage());
+            }
         }
     }
 
