@@ -9,14 +9,14 @@ public class Main {
      static void main() {
         Inventory inventory = new Inventory();
         SupplierManager supplierManager = new SupplierManager();
-
+        // Verileri kalıcı depolamadan yükle
          inventory.loadFromCsv();
-
+         // Başlangıç Tedarikçileri
         Supplier s1 = new Supplier("Ahmet Gıda", "temel gıda");
         Supplier s2 = new Supplier("Manav Mehmet", "Sebze-Meyve");
         supplierManager.addSupplier(s1);
         supplierManager.addSupplier(s2);
-
+         // Örnek veriler(envanter boşsa)
        if (inventory.getProducts().isEmpty()) {
            inventory.addProduct(new PerishableProduct("Süt", 50, 70, s1, "12.12.2025"));
            inventory.addProduct(new PerishableProduct("Yoğurt", 40, 100, s1, "30.01.2026"));
@@ -34,7 +34,7 @@ public class Main {
             int choice = getIntSafe("Seciminiz: ");
 
             switch (choice) {
-                case 1:
+                case 1:// Listeleme ve SKT Analizi
                     inventory.displayInventory();
 
                     System.out.println("\n--- KRİTİK DURUMDAKİ ÜRÜNLER (SKT Son 7 Gün) ---");
@@ -60,7 +60,7 @@ public class Main {
                         System.out.println("[TAMAM] Şu an kritik durumda ürün bulunmuyor.");
                     }
                     break;
-                case 2:
+                case 2:// Satış İşlemi
                     String searchName = getStringSafe("Aranacak urun adi: ");
                     ArrayList<Product> results = inventory.searchProducts(searchName);
                     if (results.isEmpty()) {
@@ -86,7 +86,7 @@ public class Main {
                         }
                     }
                     break;
-                case 3:
+                case 3:// Stok Güncelleme
                     String updateName = getStringSafe("Stok guncellenecek urun adi: ");
                     ArrayList<Product> updateResults = inventory.searchProducts(updateName);
                     if (updateResults.isEmpty()) {
@@ -102,7 +102,7 @@ public class Main {
                         }
                     }
                     break;
-                    case 4:
+                    case 4:// Ürün Ekleme
                     System.out.println("\n--- Yeni Urun Girisi ---");
                     String name = getStringSafe("Urun Adi: ");
                     int stock = getIntSafe("Stok Adedi: ");
@@ -137,7 +137,7 @@ public class Main {
                     inventory.saveToCsv();
                     System.out.println("[BASARILI] " + name + " (" + selectedSupplier.getName() + ") sisteme eklendi.");
                     break;
-                case 5:
+                case 5:// Ürün Silme
                     String delName = getStringSafe("Silinecek ürün adı: ");
 
                     System.out.println("\nHangi tedarikçiden silinsin?");
@@ -163,7 +163,7 @@ public class Main {
                         System.out.println("[GEÇERSİZ] Yanlış seçim yaptınız.");
                     }
                     break;
-                case 6:
+                case 6:// Tedarikçi Yönetimi
                     System.out.println("\n1. Listele\n2. Yeni Ekle");
                     int sub = getIntSafe("Secim: ");
                     if (sub == 1) supplierManager.listSuppliers();
@@ -185,7 +185,9 @@ public class Main {
     private static void printMenu() {
         System.out.println("\n1-Ürün Listele | 2-Ürün Ara/Sat | 3-Stok GÜncelleme | 4-Ürün Ekle | 5-Ürün Sil | 6-Tedarikci Yönetim | 0-Cikis");
     }
-
+    /**
+     * Kullanıcıdan güvenli bir şekilde tam sayı alır, hata durumunda tekrar sorar.
+     */
     private static int getIntSafe(String message) {
         while (true) {
             try {
@@ -216,6 +218,9 @@ public class Main {
         }
         return input;
     }
+    /**
+     * Tarih formatını (GG.AA.YYYY) doğrular ve hatalı girişi engeller.
+     */
     private static String getDateSafe() {
          java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy");
          while (true) {
@@ -229,7 +234,10 @@ public class Main {
             }
         }
     }
-
+    /**
+     * Arama sonuçlarından kullanıcının spesifik bir ürünü seçmesini sağlar.
+     * Eğer listede tek ürün varsa otomatik seçer, birden fazla varsa kullanıcıya sorar.
+     */
     private static Product selectProductFromList(ArrayList<Product> products) {
         if (products.size() == 1) return products.getFirst();
         for (int i = 0; i < products.size(); i++) {

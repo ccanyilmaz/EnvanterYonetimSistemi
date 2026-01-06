@@ -12,7 +12,10 @@ public class Product implements Storable {
         this.price = price;
         this.supplier=supplier;
     }
-
+    /**
+     * Storable arayüzünden ezilen metot: Stoğu belirtilen miktarda artırır.
+     * Negatif miktar girişine karşı korumalıdır.
+     */
     @Override
     public void stokArtir(int quantity) {
         if (quantity>0) {
@@ -20,6 +23,10 @@ public class Product implements Storable {
             System.out.println(name+" stoğuna "+quantity+" eklendi. Yeni stok: "+stock);
         }
     }
+    /**
+     * Storable arayüzünden ezilen metot: Stok miktarını düşürür.
+     * Miktarın pozitif olmasını ve mevcut stoktan fazla olmamasını kontrol eder.
+     */
     @Override
     public void stokAzalt(int quantity) {
         if (quantity > 0 && quantity <= stock) {
@@ -36,6 +43,8 @@ public class Product implements Storable {
     public Supplier getSupplier(){return supplier;}
 
     public void setName(String name) {this.name = name;}
+
+     //Fiyat güncellemesi yapar. Fiyatın negatif olamayacağı kuralını denetler.
     public void setPrice(double price) {
         if (price >= 0) {
             this.price = price;
@@ -52,7 +61,9 @@ public class Product implements Storable {
         }
     }
     public void setSupplier(Supplier supplier) {this.supplier = supplier;}
-
+    /**
+     * Ürün bilgilerini okunabilir bir formatta döndürür.
+     */
     @Override
     public String toString() {
         return "Ürün:" + name + " | stok: "+stock + " | fiyat: " + price + " | tedarikçi: " + supplier.getName();

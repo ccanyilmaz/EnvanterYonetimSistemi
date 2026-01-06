@@ -9,12 +9,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryTest {
     private Inventory envanter;
-
+    /**
+     * Her test senaryosu için izole ve temiz bir envanter nesnesi oluşturur.
+     */
     @BeforeEach
     void setUp() {
         envanter = new Inventory();
     }
-
+    /**
+     * Aynı isimdeki ürünlerin tedarikçi bazlı silinmesini test eder.
+     * Bu test, sistemin sadece isme göre değil, "İsim + Tedarikçi" ikilisine göre
+     * doğru ürünü hedefleyip hedeflemediğini doğrular.
+     */
     @Test
     void spesifikTedarikciUrununuSilmeTesti() {
 
@@ -26,7 +32,7 @@ class InventoryTest {
 
         envanter.addProduct(urun1);
         envanter.addProduct(urun2);
-
+        // Belirli bir tedarikçinin ürününü silme işlemi
         envanter.removeProduct("Süt", "Ahmet Gıda");
 
         ArrayList<Product> sonuclar = envanter.searchProducts("Süt");

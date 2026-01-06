@@ -15,7 +15,10 @@ public class Supplier {
         this.name=name;
         this.category=category;
     }
-
+    /**
+     * Tedarikçi bilgilerini metin formatında döndürür.
+     * Product sınıfının toString metodu içinde yardımcı çıktı olarak kullanılır.
+     */
     @Override
     public String toString() {
         return "tedarikçi: " + name + " | Kategori: " + category;

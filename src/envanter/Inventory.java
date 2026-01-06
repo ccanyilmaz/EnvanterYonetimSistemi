@@ -8,11 +8,17 @@
 
     public class Inventory {
         private ArrayList<Product> products = new ArrayList<>();
-
+        /**
+          Yeni bir ürünü dinamik listeye ekler.
+         */
         public void addProduct(Product p) {
             products.add(p);
             System.out.println(p.getName() + " başarıyla envantere eklendi.");
         }
+        /**
+         * Ürün ismi ve tedarikçi eşleşmesine göre spesifik bir ürünü listeden siler.
+         * Lambda ifadeleri (removeIf) kullanılarak etkin bir arama ve silme işlemi gerçekleştirilir.
+         */
         public void removeProduct(String productName, String supplierName) {
 
             boolean silindiMi = products.removeIf(p ->
@@ -53,6 +59,10 @@
         }
 
         // DOSYA İŞLEMLERİ
+        /**
+         * Mevcut envanter verilerini "envanter.csv" dosyasına virgülle ayrılmış değerler olarak kaydeder.
+         * Polimorfizm kullanılarak PerishableProduct olup olmadığı kontrol edilir.
+         */
         public void saveToCsv() {
             try (PrintWriter out = new PrintWriter(new FileWriter("envanter.csv"))) {
                 for (Product p : products) {
@@ -69,7 +79,10 @@
                 System.out.println("[HATA] Dosyaya kaydedilemedi: " + e.getMessage());
             }
         }
-
+        /**
+         * CSV dosyasındaki verileri satır satır okuyarak nesneye dönüştürür ve listeyi doldurur.
+         * Veri yükleme sırasında nesne türünü parametre sayısına göre belirler.
+         */
         public void loadFromCsv() {
             File file = new File("envanter.csv");
             if (!file.exists()) return;
